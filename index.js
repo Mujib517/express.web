@@ -2,6 +2,7 @@ const express = require('express');
 const hbs = require('express-hbs');
 const path = require('path');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const defaultRouter = require('./routes/default.router');
 const productRouter = require('./routes/product.router');
@@ -18,10 +19,12 @@ app.engine('hbs', hbs.express4({
 }));
 
 //arrow function
-app.listen(4000, () => {
+app.listen(port, () => {
     console.log("Server is running...");
 });
 
 mongoose.connection.openUri("mongodb://admin:admin@ds163595.mlab.com:63595/products");
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', defaultRouter);
 app.use('/products', productRouter);

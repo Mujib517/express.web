@@ -1,14 +1,23 @@
 <h1>Products</h1>
+<a class="btn btn-success" href="/products/new">Add New Product</a>
 
 {{#each products}}
 
 <div class="well">
-    <h3>{{brand}} {{model}} {{color}}</h3>
+    <a href="/products/{{_id}}">
+        <h3>{{brand}} {{model}} {{color}}</h3>
+    </a>
 
-    {{!-- <img class="img img-thumbnail" src="{{img}}" width="200" height="180" /> --}}
+    {{!--
+    <img class="img img-thumbnail" src="{{img}}" width="200" height="180" /> --}}
 
     <div class="text-muted">$ {{price}}</div>
     <div class="text-muted">{{lastUpdated}}</div>
-
+    <div class="pull-right">
+        <form method="POST" action="/products/delete/{{_id}}">
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+        </form>
+    </div>
+    <br/>
 </div>
 {{/each}}

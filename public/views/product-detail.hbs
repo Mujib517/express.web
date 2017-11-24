@@ -1,0 +1,41 @@
+<br/>
+<div class="row">
+    <div class="col-md-7">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>{{product.brand}}</h4>
+            </div>
+            <div class="panel-body">
+                <div>{{product.model}}</div>
+                <div>{{product.color}}</div>
+                <div>InStock: {{product.inStock}}</div>
+
+            </div>
+            <div class="panel-footer">
+                <div class="pull-left">{{product.lastUpdated}}</div>
+                <div class="pull-right">
+                    <b> $ {{product.price}}</b>
+                </div>
+                <br/>
+            </div>
+        </div>
+    </div>
+</div>
+{{#if product.reviews}}
+<div class="row">
+    <h3>Reviews</h3>
+    <hr/> {{#each product.reviews}}
+    <div>
+        <h4>{{subject}}
+            <b>{{rating}} *</b>
+        </h4>
+
+        <p>{{review}}</p>
+        <div clas="text-muted">{{lastUpdated}}</div>
+    </div>
+    <hr/>
+    {{/each}}
+</div>
+{{else}}
+    <h3>Be the first to one review</h3>
+{{/if}}
