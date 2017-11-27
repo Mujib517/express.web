@@ -7,30 +7,25 @@ module.exports = {
         res.render("login");
     },
 
-    signin: (req, res) => {
-        var user = new User(req.body);
-
-
-        User.findOne({ email: user.email })
+    signin: (req, email, password, done) => {
+        User.findOne({ email: email })
             .exec()
             .then(function (usr) {
                 if (usr) {
-                    console.log(usr);
                     var pwd = usr.password; //db pwd
-                    var isCorrectPwd = bcrypt.compareSync(req.body.password, pwd);
-                    if (isCorrectPwd) res.redirect("/products");
-                    else {
-                        res.locals.error = true;
-                        res.render("login");
-                    }
+                    var isCorrectPwd = bcrypt.compareSync(password, pwd);
+                    if (isCorrectPwd) done(null, { email: usr.email });
+                    else done("Wrong username or password");
                 }
-                else {
-                    res.locals.error = true;
-                    res.render("login");
-                }
+                else done("Wrong username or password");
             })
             .catch(function (err) {
-                res.render("error", { err: err });
+                done("Wrong username or password");
             });
+    },
+
+    logout: (req, res) => {
+        req.logout();
+        res.redirect("/users/login");
     }
 }

@@ -3,12 +3,19 @@ const hbs = require('express-hbs');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 
 const defaultRouter = require('./routes/default.router');
 const productRouter = require('./routes/product.router');
+const userRouter = require('./routes/user.router');
+const middlewares = require('./utilities/middlewares');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+const Auth = require('./utilities/auth');
+const auth = new Auth(app);
+
 
 app.use(express.static("public"));
 app.set('view engine', 'hbs');
@@ -24,7 +31,17 @@ app.listen(port, () => {
 });
 
 mongoose.connection.openUri("mongodb://admin:admin@ds163595.mlab.com:63595/products");
+mongoose.Primary = global.Primary;
+
+auth.configureAuth();
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/users/', userRouter);
 app.use('/', defaultRouter);
+
+app.use(middlewares.isAuthenticated);
+app.use(middlewares.attchAuthInfo);
+app.use(middlewares.noCache);
+
 app.use('/products', productRouter);
