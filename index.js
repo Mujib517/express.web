@@ -4,6 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const jade = require('jade');
 
 const defaultRouter = require('./routes/default.router');
 const productRouter = require('./routes/product.router');
@@ -18,12 +19,19 @@ const auth = new Auth(app);
 
 
 app.use(express.static("public"));
+
 app.set('view engine', 'hbs');
 app.set('views', path.join(path.join(__dirname, 'public'), 'views'));
 app.engine('hbs', hbs.express4({
     defaultLayout: __dirname + "/public/views/layout.hbs",
     partialsDir: __dirname + "/public/views/partials"
 }));
+
+// app.set('view engine', 'jade');
+
+app.get('/basic', function (req, res) {
+    res.render("index");
+});
 
 //arrow function
 app.listen(port, () => {

@@ -1,0 +1,12 @@
+extends index
+block content
+    .row
+        .col-md-6
+            each product in products
+                div.well
+                    h3= product.brand+' '+product.model
+                    p=  product.price
+                    if product.color
+                        b= 'Color '+ product.color
+                    else 
+                        b No Color
